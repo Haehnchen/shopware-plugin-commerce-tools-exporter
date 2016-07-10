@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="commerce_tools_exporter.config" class="CommerceToolsExporter\Config\Config">
+            <factory class="CommerceToolsExporter\Config\ConfigFactory" method="create" />
+        </service>
+
+        <service class="GuzzleHttp\Client" id="commerce_tools_exporter.guzzle_http.client"/>
+
+        <service class="Doctrine\Common\Cache\FilesystemCache" id="commerce_tools_exporter.auth.cache">
+            <argument>%shopware.cache.backendOptions.cache_dir%/commerce_tools_exporter</argument>
+        </service>
+
+        <service class="CommerceToolsExporter\Client\ClientAuthenticator"
+                 id="commerce_tools_exporter.client.client_authenticator">
+
+            <argument id="commerce_tools_exporter.guzzle_http.client" type="service"/>
+            <argument id="commerce_tools_exporter.auth.cache" type="service"/>
+            <argument id="commerce_tools_exporter.config" type="service"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Client\Client" id="commerce_tools_exporter.client.client">
+            <argument id="commerce_tools_exporter.client.client_authenticator" type="service"/>
+            <argument id="commerce_tools_exporter.config" type="service"/>
+            <argument id="commerce_tools_exporter.guzzle_http.client" type="service"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Exporter\Category\CategoryExporter"
+                 id="commerce_tools_exporter.exporter.category.category_exporter">
+            <argument id="models" type="service"/>
+            <argument id="commerce_tools_exporter.client.client" type="service"/>
+            <argument id="commerce_tools_exporter.repository.category_repository" type="service"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Repository\CategoryRepository"
+                 id="commerce_tools_exporter.repository.category_repository">
+            <argument id="commerce_tools_exporter.client.client" type="service"/>
+        </service>
+
+    </services>
+
+</container>

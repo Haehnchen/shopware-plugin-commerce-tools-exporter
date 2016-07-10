@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../engine/Shopware/Components/Plugin/schema/config.xsd">
+
+    <elements>
+        <element>
+            <name>project</name>
+            <label>Project</label>
+        </element>
+
+        <element>
+            <name>client_id</name>
+            <label>Client ID</label>
+        </element>
+
+        <element>
+            <name>client_secret</name>
+            <label>Client Secret</label>
+        </element>
+    </elements>
+
+</config>

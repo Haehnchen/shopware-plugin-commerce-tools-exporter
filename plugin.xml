@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../engine/Shopware/Components/Plugin/schema/plugin.xsd">
+
+    <label lang="de">CommerceTools Exporter</label>
+    <label lang="en">CommerceTools Exporter</label>
+
+    <version>1.0.0</version>
+    <copyright>Daniel Espendiller</copyright>
+    <author>espend.de</author>
+    <link>http://espend.de</link>
+
+    <compatibility minVersion="5.2.0" />
+</plugin>
