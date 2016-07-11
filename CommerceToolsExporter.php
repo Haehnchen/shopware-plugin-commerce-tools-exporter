@@ -4,11 +4,10 @@ namespace CommerceToolsExporter;
 
 use CommerceToolsExporter\Commands\CheckCommand;
 use CommerceToolsExporter\Commands\ExportCommand;
-use Enlight\Event\SubscriberInterface;
 use Shopware\Components\Console\Application;
 use Shopware\Components\Plugin;
 
-class CommerceToolsExporter extends Plugin implements SubscriberInterface
+class CommerceToolsExporter extends Plugin
 {
     public function registerCommands(Application $application)
     {
