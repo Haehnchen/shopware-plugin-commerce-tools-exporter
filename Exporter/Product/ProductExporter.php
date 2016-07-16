@@ -7,8 +7,8 @@ use CommerceToolsExporter\Config\Config;
 use CommerceToolsExporter\Exception\CommerceToolsExporter;
 use CommerceToolsExporter\Exporter\ExportContext;
 use CommerceToolsExporter\Exporter\Image\ImageExporter;
+use CommerceToolsExporter\Exporter\Seo\SeoUrl;
 use CommerceToolsExporter\Repository\CategoryRepository;
-use CommerceToolsExporter\Repository\ImageRepository;
 use CommerceToolsExporter\Repository\ProductRepository;
 use CommerceToolsExporter\Request\Request;
 use CommerceToolsExporter\Response\ResponseUtil;
@@ -48,6 +48,10 @@ class ProductExporter
      * @var ImageExporter
      */
     private $imageExporter;
+    /**
+     * @var SeoUrl
+     */
+    private $seoUrl;
 
     public function __construct(
         ProductVisitor $visitor,
@@ -56,7 +60,8 @@ class ProductExporter
         CategoryRepository $repository,
         ProductRepository $productRepository,
         MediaServiceInterface $mediaService,
-        ImageExporter $imageExporter
+        ImageExporter $imageExporter,
+        SeoUrl $seoUrl
     )
     {
         $this->visitor = $visitor;
@@ -66,6 +71,7 @@ class ProductExporter
         $this->productRepository = $productRepository;
         $this->mediaService = $mediaService;
         $this->imageExporter = $imageExporter;
+        $this->seoUrl = $seoUrl;
     }
 
     public function export(ExportContext $context)
@@ -88,7 +94,7 @@ class ProductExporter
                 continue;
             }
 
-            if(null === $product = $this->mapProduct($article, $taxId, $categories)) {
+            if(null === $product = $this->mapProduct($context, $article, $taxId, $categories)) {
                 continue;
             }
 
@@ -117,14 +123,16 @@ class ProductExporter
         }
     }
 
-    private function mapProduct(array $swProduct, $taxId, array $categoryMap)
+    private function mapProduct(ExportContext $context, array $swProduct, $taxId, array $categoryMap)
     {
+        $seoUrl = $this->seoUrl->getArticleSeoUrlWithFallback($context, $swProduct['id']);
+
         $product = [
             'name' => [
                 'en' => $swProduct['name'],
             ],
             'slug' => [
-                'en' => preg_replace('#[^0-9a-z-_]#i', '', $swProduct['id'] . '-' . $swProduct['name']), // @TODO: seo url,
+                'en' => preg_replace('#[^0-9a-z-_]#i', '-', $seoUrl), // @TODO: seo url,
             ],
             'productType' => [
                 'id' => $this->config->getProductTypeId(),
@@ -135,7 +143,7 @@ class ProductExporter
                     [
                         'value' => [
                             'currencyCode' => 'EUR',
-                            'centAmount' => round($swProduct['mainDetail']['prices'][0]['price'] * 19), // @TODO
+                            'centAmount' => round($swProduct['mainDetail']['prices'][0]['price'] * 119), // @TODO
                         ]
                     ]
                 ],
@@ -143,6 +151,10 @@ class ProductExporter
                     [
                         'name' => 'external-id',
                         'value' => $swProduct['mainDetail']['number'],
+                    ],
+                    [
+                        'name' => 'seo-url',
+                        'value' => $seoUrl,
                     ],
                 ],
             ],
@@ -178,7 +190,7 @@ class ProductExporter
             foreach($swProduct['details'] as $variant) {
                 $product['variants'][] = [
                     'sku' => $variant['number'],
-                    'price' => round($variant['prices'][0]['price'] * 19), // @TODO
+                    'price' => round($variant['prices'][0]['price'] * 119), // @TODO
                 ];
             }
         }

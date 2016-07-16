@@ -23,4 +23,13 @@ class ExportContext
     {
         return $this->logger;
     }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getShopId()
+    {
+        // @TODO
+        return 1;
+    }
 }

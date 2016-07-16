@@ -108,6 +108,7 @@
             <argument type="service" id="commerce_tools_exporter.repository.product_repository"/>
             <argument type="service" id="shopware_media.media_service"/>
             <argument type="service" id="commerce_tools_exporter.image.exporter"/>
+            <argument type="service" id="commerce_tools_exporter.exporter.seo.seo_url"/>
         </service>
 
         <service class="CommerceToolsExporter\Repository\ProductRepository"
@@ -119,6 +120,10 @@
                  id="commerce_tools_exporter.image.exporter">
             <argument id="commerce_tools_exporter.client.client" type="service"/>
             <argument type="service" id="pluginlogger"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Exporter\Seo\SeoUrl" id="commerce_tools_exporter.exporter.seo.seo_url">
+            <argument id="dbal_connection" type="service"/>
         </service>
 
     </services>
