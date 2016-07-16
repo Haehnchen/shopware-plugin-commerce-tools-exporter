@@ -119,7 +119,13 @@ class CategoryExporter
         }
     }
 
-    public function update(ExportContext $context, array $new, array $old)
+    /**
+     * @param ExportContext $context
+     * @param array $new
+     * @param array $old
+     * @throws \CommerceToolsExporter\ChangeSet\Exception\ChangeSetConverterException
+     */
+    private function update(ExportContext $context, array $new, array $old)
     {
         $change = (new ChangeSet($old, $new, $this->actions->fields()))
             ->compute();

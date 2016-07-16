@@ -2,12 +2,14 @@
 
 namespace CommerceToolsExporter\Commands;
 
+use CommerceToolsExporter\Exporter\ExportContext;
 use Shopware\Commands\ShopwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckCommand extends ShopwareCommand
+class ProductExportCommand extends ShopwareCommand
 {
     /**
      * {@inheritdoc}
@@ -15,8 +17,8 @@ class CheckCommand extends ShopwareCommand
     protected function configure()
     {
         $this
-            ->setName('ct:check:auth')
-            ->setDescription('CommerceTools Article Exporter')
+            ->setName('ct:exporter:products')
+            ->setDescription('CommerceTools article exporter')
         ;
     }
 
@@ -25,8 +27,8 @@ class CheckCommand extends ShopwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(
-            $this->getContainer()->get('commerce_tools_exporter.client.client_authenticator')->getAuthorizationHeader()
-        );
+        $this->getContainer()
+            ->get('commerce_tools_exporter.exporter.product_exporter')
+            ->export(new ExportContext(new ConsoleLogger($output)));
     }
 }

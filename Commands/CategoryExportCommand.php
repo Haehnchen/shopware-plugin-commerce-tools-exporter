@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExportCommand extends ShopwareCommand
+class CategoryExportCommand extends ShopwareCommand
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class ExportCommand extends ShopwareCommand
     protected function configure()
     {
         $this
-            ->setName('ct:exporter')
-            ->setDescription('CommerceTools Article Exporter')
+            ->setName('ct:exporter:categories')
+            ->setDescription('CommerceTools category exporter')
         ;
     }
 

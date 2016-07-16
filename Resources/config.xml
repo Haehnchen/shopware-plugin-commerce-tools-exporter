@@ -17,6 +17,11 @@
             <name>client_secret</name>
             <label>Client Secret</label>
         </element>
+
+        <element>
+            <name>product_type_id</name>
+            <label>Main product type id</label>
+        </element>
     </elements>
 
 </config>

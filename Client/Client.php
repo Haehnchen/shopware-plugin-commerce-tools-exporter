@@ -54,4 +54,17 @@ class Client
             'headers' => $headers
         ]);
     }
+    
+    public function upload($url, $mimeType, $filename)
+    {
+        $headers = [
+            'Authorization' => $this->authenticator->getAuthorizationHeader(),
+            'Content-Type' => $mimeType,
+        ];
+
+        return $this->client->post(self::BASE_URL . '/' . $this->config->getProject() . '/' . $url, [
+            'headers' => $headers,
+            'body' => fopen($filename, 'r'),
+        ]);
+    }
 }

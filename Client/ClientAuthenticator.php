@@ -54,8 +54,8 @@ class ClientAuthenticator
      */
     private function getAccessToken()
     {
-        if ($this->cache->contains(self::CACHE_KEY)) {
-            return $this->cache->fetch(self::CACHE_KEY);
+        if ($this->cache->contains($this->getCacheKey())) {
+            return $this->cache->fetch($this->getCacheKey());
         }
 
         $response = $this->requestToken();
@@ -64,7 +64,7 @@ class ClientAuthenticator
         }
 
         // cache key with expire smaller then its valid
-        $this->cache->save(self::CACHE_KEY, $response, $response['expires_in'] * 0.7);
+        $this->cache->save($this->getCacheKey(), $response, $response['expires_in'] * 0.7);
         
         return $response;
     }
@@ -75,7 +75,7 @@ class ClientAuthenticator
     private function requestToken()
     {
         try {
-            $request = $this->client->post(Client::BASE_URL . '/oauth/token', [
+            $request = $this->client->post('https://auth.sphere.io/oauth/token', [
                 'body' => [
                     'grant_type' => 'client_credentials',
                     'scope' => 'manage_project:' . $this->config->getProject(),
@@ -90,5 +90,13 @@ class ClientAuthenticator
         }
 
         return json_decode((string) $request->getBody(), true);
+    }
+
+    /**
+     * @return string
+     */
+    private function getCacheKey()
+    {
+        return md5(self::CACHE_KEY . '-' . $this->config->getProject() . $this->config->getClientId() . $this->config->getClientSecret());
     }
 }

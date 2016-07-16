@@ -94,6 +94,33 @@
 
         </service>
 
+        <service class="CommerceToolsExporter\Visitor\ProductVisitor"
+                 id="commerce_tools_exporter.visitor.product_visitor">
+            <argument type="service" id="models"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Exporter\Product\ProductExporter"
+                 id="commerce_tools_exporter.exporter.product_exporter">
+            <argument id="commerce_tools_exporter.visitor.product_visitor" type="service"/>
+            <argument type="service" id="commerce_tools_exporter.config"/>
+            <argument type="service" id="commerce_tools_exporter.client.client"/>
+            <argument type="service" id="commerce_tools_exporter.repository.category_repository"/>
+            <argument type="service" id="commerce_tools_exporter.repository.product_repository"/>
+            <argument type="service" id="shopware_media.media_service"/>
+            <argument type="service" id="commerce_tools_exporter.image.exporter"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Repository\ProductRepository"
+                 id="commerce_tools_exporter.repository.product_repository">
+            <argument id="commerce_tools_exporter.client.client" type="service"/>
+        </service>
+
+        <service class="CommerceToolsExporter\Exporter\Image\ImageExporter"
+                 id="commerce_tools_exporter.image.exporter">
+            <argument id="commerce_tools_exporter.client.client" type="service"/>
+            <argument type="service" id="pluginlogger"/>
+        </service>
+
     </services>
 
 </container>
