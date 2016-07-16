@@ -41,5 +41,33 @@ class CategoryRepository
         }
 
         return $array['results'][0];
-    }    
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCategoryMap()
+    {
+        $options = [
+            'limit' => 100,
+        ];
+
+        $response = $this->client->send(new Request('categories?' . http_build_query($options)));
+        if ($response->getStatusCode() != 200) {
+            return null;
+        }
+
+        $array = json_decode((string) $response->getBody(), true);
+
+        $map = [];
+        foreach($array['results'] as $result) {
+            if(!isset($result['externalId'])) {
+                continue;
+            }
+
+            $map[$result['externalId']] = $result['id'];
+        }
+
+        return $map;
+    }
 }

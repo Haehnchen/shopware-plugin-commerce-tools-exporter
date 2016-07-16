@@ -35,11 +35,63 @@
             <argument id="models" type="service"/>
             <argument id="commerce_tools_exporter.client.client" type="service"/>
             <argument id="commerce_tools_exporter.repository.category_repository" type="service"/>
+            <argument type="service" id="commerce_tools_exporter.change_set.category.collection"/>
+            <argument type="service" id="commerce_tools_exporter.change_set.action_converter"/>
         </service>
 
         <service class="CommerceToolsExporter\Repository\CategoryRepository"
                  id="commerce_tools_exporter.repository.category_repository">
             <argument id="commerce_tools_exporter.client.client" type="service"/>
+        </service>
+
+        <service class="CommerceToolsExporter\ChangeSet\ActionConverter"
+                 id="commerce_tools_exporter.change_set.action_converter"
+                 public="false"/>
+
+        <service class="CommerceToolsExporter\ChangeSet\Action\Collection"
+                 id="commerce_tools_exporter.change_set.category.collection">
+
+            <call method="add">
+                <argument type="service">
+                    <service class="CommerceToolsExporter\ChangeSet\Action\Action">
+                        <argument>parent</argument>
+                        <argument>changeParent</argument>
+                    </service>
+                </argument>
+            </call>
+            <call method="add">
+                <argument type="service">
+                    <service class="CommerceToolsExporter\ChangeSet\Action\Action">
+                        <argument>metaTitle</argument>
+                        <argument>setMetaTitle</argument>
+                    </service>
+                </argument>
+            </call>
+            <call method="add">
+                <argument type="service">
+                    <service class="CommerceToolsExporter\ChangeSet\Action\Action">
+                        <argument>metaDescription</argument>
+                        <argument>setMetaDescription</argument>
+                    </service>
+                </argument>
+            </call>
+            <call method="add">
+                <argument type="service">
+                    <service class="CommerceToolsExporter\ChangeSet\Action\Action">
+                        <argument>metaKeywords</argument>
+                        <argument>setMetaKeywords</argument>
+                    </service>
+                </argument>
+            </call>
+            <call method="add">
+                <argument type="service">
+                    <service class="CommerceToolsExporter\ChangeSet\Action\Action">
+                        <argument>description</argument>
+                        <argument>setDescription</argument>
+                    </service>
+                </argument>
+            </call>
+
         </service>
 
     </services>
