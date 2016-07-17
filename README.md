@@ -13,16 +13,34 @@ Shopware plugin which mainly should export product and categories to Commerce-To
  - Shopware >= 5.2
  - New Shopware Plugin System
  - Commerce-Tools Account with: project, client_id, client_secret, product_type_id
+ - You should start a Commerce-Tools project with sample data eg. we need configured taxes and product types
+
+### Custom attributes
+
+Configurate custom attributes and fields
+
+#### Products attributes
+
+ - `external-id`
+ - `seo-url`
 
 ## Command
 
-Use `-vvv` for debug output
+Check credentials
 
 ```
  php bin/console ct:check:auth
+```
+ 
+Run data exporter
+ 
+```
  php bin/console ct:exporter:categories
  php bin/console ct:exporter:products
 ```
+
+Run commands twice for category and image relations
+Use `-vvv` for debug output
 
 ## Done
 
